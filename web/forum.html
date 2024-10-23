@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forum - Threat Intelligence Platform</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+<body class="bg-gray-100 p-10">
+  <div class="container mx-auto">
+    <h1 class="text-3xl mb-5">Forum</h1>
+
+    <!-- Forum Post Form -->
+    <div class="bg-white p-6 rounded shadow-md mb-8">
+      <h2 class="text-xl font-bold mb-3">Create a New Post</h2>
+      <form id="forumForm">
+        <textarea id="post_content" class="w-full p-2 border rounded mb-3" rows="4" placeholder="Share your thoughts..."></textarea>
+        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Post</button>
+      </form>
+    </div>
+
+    <!-- Forum Posts Display -->
+    <div class="bg-white p-6 rounded shadow-md">
+      <h2 class="text-xl font-bold mb-3">Recent Posts</h2>
+      <div id="forumPosts">
+        <!-- Posts will be dynamically inserted here -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Fetch and Display Forum Posts
+    async function fetchPosts() {
+      const response = await fetch('/api/forum-posts');
+      const posts = await response.json();
+      const forumPostsContainer = document.getElementById('forumPosts');
+      forumPostsContainer.innerHTML = '';
+
+      posts.forEach(post => {
+        const postElement = document.createElement('div');
+        postElement.className = 'border p-4 mb-4 rounded';
+        postElement.innerHTML = `<p>${post.post_content}</p><p class="text-sm text-gray-500">Posted at: ${new Date(post.created_at).toLocaleString()}</p>`;
+        forumPostsContainer.appendChild(postElement);
+      });
+    }
+
+    // Handle Forum Post Submission
+    document.getElementById('forumForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const postContent = document.getElementById('post_content').value;
+      
+      const response = await fetch('/api/forum-post', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ post_content: postContent })
+      });
+
+      if (response.ok) {
+        document.getElementById('post_content').value = '';
+        fetchPosts(); // Reload posts after submission
+      }
+    });
+
+    // Load posts when the page loads
+    fetchPosts();
+  </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home - Threat Intelligence Platform</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+<body class="bg-gray-100 p-10">
+  <div class="container mx-auto">
+    <h1 class="text-3xl mb-5">Home</h1>
+    <form action="/api/add-threat" method="POST" class="bg-white p-6 rounded shadow-md mb-5">
+      <textarea name="threat_description" class="w-full p-2 border rounded mb-3" rows="4" placeholder="Describe a threat"></textarea>
+      <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Add Threat</button>
+    </form>
+    <a href="/forum" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Go to Forum</a>
+  </div>
+</body>
+</html>
